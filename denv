@@ -17,7 +17,7 @@ denv () {
 }
 
 denv_enter() {
-    asset="$1"
+    local asset="$1"
     if [ -z "${asset}" ]; then
         echo "Usage: denv enter <asset>"
         return 1
@@ -25,7 +25,7 @@ denv_enter() {
 
     DENV_CURRENT="${asset}"
 
-    dc_file="assets/${asset}/docker-compose.yml"
+    local dc_file="assets/${asset}/docker-compose.yml"
     docker-compose -f "${dc_file}" rm -f || return 2
     docker-compose -f "${dc_file}" run sync || return 2
 
@@ -43,19 +43,19 @@ denv_exit() {
         unset DENV_OLD_PS1
     fi
 
-    dc_file="assets/$DENV_CURRENT/docker-compose.yml"
+    local dc_file="assets/$DENV_CURRENT/docker-compose.yml"
     docker-compose -f "${dc_file}" kill || return 2
 
     unset DENV_CURRENT
 }
 
 denv_restart() {
-    container="$1"
+    local container="$1"
     if [ -z "${container}" ]; then
         echo "Usage: denv restart <container>"
         return 1
     fi
 
-    dc_file="assets/$DENV_CURRENT/docker-compose.yml"
+    local dc_file="assets/$DENV_CURRENT/docker-compose.yml"
     docker-compose -f "${dc_file}" restart "${container}" || return 2
 }
