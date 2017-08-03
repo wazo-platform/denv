@@ -18,8 +18,10 @@ denv_enter() {
     fi
 
     export DENV_CURRENT=$1
+    export TEST_DOCKER=ignore
 }
 
 denv_exit() {
     unset DENV_CURRENT
+    unset TEST_DOCKER
 }
