@@ -15,22 +15,22 @@ denv () {
 
 denv_enter() {
     asset="$1"
-    if [ -z "$asset" ]; then
+    if [ -z "${asset}" ]; then
         echo "Usage: denv enter <asset>"
         return 1
     fi
 
-    dc_file="assets/$asset/docker-compose.yml"
-    docker-compose -f "$dc_file" rm -f || return 2
-    docker-compose -f "$dc_file" run sync || return 2
+    dc_file="assets/${asset}/docker-compose.yml"
+    docker-compose -f "${dc_file}" rm -f || return 2
+    docker-compose -f "${dc_file}" run sync || return 2
 
     export TEST_DOCKER=ignore
-    export DENV_CURRENT=$asset
+    export DENV_CURRENT=${asset}
 }
 
 denv_exit() {
     dc_file="assets/$DENV_CURRENT/docker-compose.yml"
-    docker-compose -f "$dc_file" kill || return 2
+    docker-compose -f "${dc_file}" kill || return 2
 
     unset DENV_CURRENT
     unset TEST_DOCKER
