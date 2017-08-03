@@ -1,6 +1,6 @@
 # denv
 
-`denv` is used to manage Docker containers in Wazo integration tests to ease development workflow.
+`denv` (Docker environment) is used to manage Docker containers in Wazo integration tests to ease development workflow.
 
 Example:
 
