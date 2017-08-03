@@ -3,6 +3,9 @@ denv () {
         enter)
             denv_enter $2
         ;;
+        restart)
+            denv_restart $2
+        ;;
         exit)
             denv_exit
         ;;
@@ -42,4 +45,15 @@ denv_exit() {
     docker-compose -f "${dc_file}" kill || return 2
 
     unset DENV_CURRENT
+}
+
+denv_restart() {
+    container="$1"
+    if [ -z "${container}" ]; then
+        echo "Usage: denv restart <container>"
+        return 1
+    fi
+
+    dc_file="assets/$DENV_CURRENT/docker-compose.yml"
+    docker-compose -f "${dc_file}" restart "${container}" || return 2
 }
