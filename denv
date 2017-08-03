@@ -8,13 +8,16 @@ denv () {
         ;;
         *)
             echo "Usage: denv {enter|exit} [args...]"
+            return 1
         ;;
     esac
 }
 
 denv_enter() {
-    if [ -z "$1" ]; then
+    asset="$1"
+    if [ -z "$asset" ]; then
         echo "Usage: denv enter <asset>"
+        return 1
     fi
 
     export DENV_CURRENT=$1
