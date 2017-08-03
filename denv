@@ -20,18 +20,20 @@ denv_enter() {
         return 1
     fi
 
+    DENV_CURRENT="${asset}"
+
     dc_file="assets/${asset}/docker-compose.yml"
     docker-compose -f "${dc_file}" rm -f || return 2
     docker-compose -f "${dc_file}" run sync || return 2
 
     export TEST_DOCKER=ignore
-    export DENV_CURRENT=${asset}
 }
 
 denv_exit() {
+    unset TEST_DOCKER
+
     dc_file="assets/$DENV_CURRENT/docker-compose.yml"
     docker-compose -f "${dc_file}" kill || return 2
 
     unset DENV_CURRENT
-    unset TEST_DOCKER
 }
