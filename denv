@@ -38,8 +38,10 @@ denv_enter() {
 denv_exit() {
     unset TEST_DOCKER
 
-    PS1="$DENV_OLD_PS1"
-    unset DENV_OLD_PS1
+    if [ -n "$DENV_OLD_PS1" ]; then
+        PS1="$DENV_OLD_PS1"
+        unset DENV_OLD_PS1
+    fi
 
     dc_file="assets/$DENV_CURRENT/docker-compose.yml"
     docker-compose -f "${dc_file}" kill || return 2
