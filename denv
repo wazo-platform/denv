@@ -1,12 +1,12 @@
 denv () {
     case "$1" in
-        enter)
+        e|enter)
             denv_enter $2
         ;;
-        restart)
+        r|restart)
             denv_restart $2
         ;;
-        exit)
+        x|exit)
             denv_exit
         ;;
         *)
