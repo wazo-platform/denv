@@ -1,0 +1,25 @@
+denv () {
+    case "$1" in
+        enter)
+            denv_enter $2
+        ;;
+        exit)
+            denv_exit
+        ;;
+        *)
+            echo "Usage: denv {enter|exit} [args...]"
+        ;;
+    esac
+}
+
+denv_enter() {
+    if [ -z "$1" ]; then
+        echo "Usage: denv enter <asset>"
+    fi
+
+    export DENV_CURRENT=$1
+}
+
+denv_exit() {
+    unset DENV_CURRENT
+}
