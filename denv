@@ -9,11 +9,14 @@ denv () {
         r|restart)
             denv_restart $2
         ;;
+        s|reset)
+            denv_reset $2
+        ;;
         x|exit)
             denv_exit $2
         ;;
         *)
-            echo "Usage: denv {enter|exit} [args...]"
+            echo "Usage: denv {enter|exit|reset} [args...]"
             return 1
         ;;
     esac
@@ -71,4 +74,19 @@ denv_restart() {
 
     local dc_file="assets/$DENV_CURRENT/docker-compose.yml"
     docker-compose -f "${dc_file}" restart "${container}" || return 2
+}
+
+denv_reset() {
+    local asset="$1"
+    if [ -z "${asset}" ] ; then
+        asset="${DENV_CURRENT}"
+    fi
+    if [ -z "${asset}" ] ; then
+        echo "Could not determine asset."
+        echo "Usage: denv reset [asset]"
+        return 1
+    fi
+
+    denv_exit $asset
+    denv_enter $asset
 }
