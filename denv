@@ -16,7 +16,7 @@ denv () {
             denv_exit $2
         ;;
         *)
-            echo "Usage: denv {enter|exit|reset} [args...]"
+            echo "Usage: denv {enter|exit|restart|reset} [args...]"
             return 1
         ;;
     esac
