@@ -10,7 +10,7 @@ denv () {
             denv_restart $2
         ;;
         x|exit)
-            denv_exit
+            denv_exit $2
         ;;
         *)
             echo "Usage: denv {enter|exit} [args...]"
@@ -39,6 +39,16 @@ denv_enter() {
 }
 
 denv_exit() {
+    local asset="$1"
+    if [ -z "${asset}" ] ; then
+        asset="${DENV_CURRENT}"
+    fi
+    if [ -z "${asset}" ] ; then
+        echo "Could not determine asset."
+        echo "Usage: denv exit [asset]"
+        return 1
+    fi
+
     unset TEST_DOCKER
 
     if [ -n "$DENV_OLD_PS1" ]; then
@@ -46,7 +56,7 @@ denv_exit() {
         unset DENV_OLD_PS1
     fi
 
-    local dc_file="assets/$DENV_CURRENT/docker-compose.yml"
+    local dc_file="assets/${asset}/docker-compose.yml"
     docker-compose -f "${dc_file}" kill || return 2
 
     unset DENV_CURRENT
