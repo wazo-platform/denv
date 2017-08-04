@@ -35,8 +35,8 @@ denv_enter() {
     docker-compose -f "${dc_file}" rm -f || return 2
     docker-compose -f "${dc_file}" run sync || return 2
 
-    DENV_OLD_PS1="$PS1"
-    PS1="[${asset}]$PS1"
+    DENV_OLD_PS1="${PS1}"
+    PS1="[${asset}]${PS1}"
 
     export TEST_DOCKER=ignore
 }
@@ -54,8 +54,8 @@ denv_exit() {
 
     unset TEST_DOCKER
 
-    if [ -n "$DENV_OLD_PS1" ]; then
-        PS1="$DENV_OLD_PS1"
+    if [ -n "${DENV_OLD_PS1}" ]; then
+        PS1="${DENV_OLD_PS1}"
         unset DENV_OLD_PS1
     fi
 
@@ -72,7 +72,7 @@ denv_restart() {
         return 1
     fi
 
-    local dc_file="assets/$DENV_CURRENT/docker-compose.yml"
+    local dc_file="assets/${DENV_CURRENT}/docker-compose.yml"
     docker-compose -f "${dc_file}" restart "${container}" || return 2
 }
 
