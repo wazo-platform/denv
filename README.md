@@ -67,8 +67,7 @@ git clone https://github.com/wazo-pbx/denv
 echo "source $PWD/denv/denv" >> ~/.bashrc
 
 # zsh
-mkdir -p ~/.zsh
-ln -s "$PWD/denv/denv" ~/.zsh
+echo "source $PWD/denv/denv" >> ~/.zshrc
 ```
 
 ## Tips
