@@ -4,7 +4,7 @@
 denv () {
     case "$1" in
         e|enter)
-            denv_enter $2
+            denv_enter $2 $3
         ;;
         r|restart)
             denv_restart $2
@@ -22,18 +22,26 @@ denv () {
     esac
 }
 
+projectify () {
+    project="$1"
+    asset="$2"
+    echo "${project}0${asset}" | tr -d '_-'
+}
+
 denv_enter() {
-    local asset="$1"
-    if [ -z "${asset}" ]; then
-        echo "Usage: denv enter <asset>"
+    local project="$1"
+    local asset="$2"
+    if [ -z "${asset}" -o -z "${project}" ]; then
+        echo "Usage: denv enter <project> <asset>"
         return 1
     fi
 
     DENV_CURRENT="${asset}"
+    DENV_PROJECT="${project}"
 
     local dc_file="assets/${asset}/docker-compose.yml"
-    docker-compose -f "${dc_file}" rm -f || return 2
-    docker-compose -f "${dc_file}" run sync || return 2
+    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" rm -f || return 2
+    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" run sync || return 2
 
     DENV_OLD_PS1="${PS1}"
     PS1="[${asset}]${PS1}"
@@ -42,13 +50,17 @@ denv_enter() {
 }
 
 denv_exit() {
-    local asset="$1"
+    local project="$1"
+    if [ -z "${project}" ] ; then
+        project="${DENV_PROJECT}"
+    fi
+    local asset="$2"
     if [ -z "${asset}" ] ; then
         asset="${DENV_CURRENT}"
     fi
-    if [ -z "${asset}" ] ; then
-        echo "Could not determine asset."
-        echo "Usage: denv exit [asset]"
+    if [ -z "${project}" -o -z "${asset}" ] ; then
+        echo "Could not determine project or asset."
+        echo "Usage: denv exit [project asset]"
         return 1
     fi
 
@@ -60,9 +72,10 @@ denv_exit() {
     fi
 
     local dc_file="assets/${asset}/docker-compose.yml"
-    docker-compose -f "${dc_file}" kill || return 2
+    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" kill || return 2
 
     unset DENV_CURRENT
+    unset DENV_PROJECT
 }
 
 denv_restart() {
@@ -71,22 +84,32 @@ denv_restart() {
         echo "Usage: denv restart <container>"
         return 1
     fi
-
-    local dc_file="assets/${DENV_CURRENT}/docker-compose.yml"
-    docker-compose -f "${dc_file}" restart "${container}" || return 2
-}
-
-denv_reset() {
-    local asset="$1"
-    if [ -z "${asset}" ] ; then
-        asset="${DENV_CURRENT}"
-    fi
-    if [ -z "${asset}" ] ; then
-        echo "Could not determine asset."
-        echo "Usage: denv reset [asset]"
+    project="${DENV_PROJECT}"
+    asset="${DENV_CURRENT}"
+    if [ -z "${project}" -o -z "${asset}" ] ; then
+        echo "Could not determine project or asset."
         return 1
     fi
 
-    denv_exit $asset
-    denv_enter $asset
+    local dc_file="assets/${asset}/docker-compose.yml"
+    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" restart "${container}" || return 2
+}
+
+denv_reset() {
+    local project="$1"
+    if [ -z "${project}" ] ; then
+        project="${DENV_PROJECT}"
+    fi
+    local asset="$2"
+    if [ -z "${asset}" ] ; then
+        asset="${DENV_CURRENT}"
+    fi
+    if [ -z "${project}" -o -z "${asset}" ] ; then
+        echo "Could not determine project or asset."
+        echo "Usage: denv reset [project asset]"
+        return 1
+    fi
+
+    denv_exit $project $asset
+    denv_enter $project $asset
 }
