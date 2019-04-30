@@ -39,9 +39,9 @@ denv_enter() {
     DENV_CURRENT="${asset}"
     DENV_PROJECT="${project}"
 
-    local dc_file="assets/${asset}/docker-compose.yml"
-    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" rm -f || return 2
-    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" run sync || return 2
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" down -v || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" run sync || return 2
 
     DENV_OLD_PS1="${PS1}"
     PS1="[${asset}]${PS1}"
@@ -71,8 +71,8 @@ denv_exit() {
         unset DENV_OLD_PS1
     fi
 
-    local dc_file="assets/${asset}/docker-compose.yml"
-    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" kill || return 2
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" kill || return 2
 
     unset DENV_CURRENT
     unset DENV_PROJECT
@@ -91,8 +91,8 @@ denv_restart() {
         return 1
     fi
 
-    local dc_file="assets/${asset}/docker-compose.yml"
-    docker-compose -f "${dc_file}" -p "$(projectify ${project} ${asset})" restart "${container}" || return 2
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" restart "${container}" || return 2
 }
 
 denv_reset() {
