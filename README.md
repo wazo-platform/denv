@@ -5,23 +5,23 @@
 Example:
 
 ```
-(webhookd-test)user ~/data/git/webhookd/integration_tests $ denv enter base
-Removing base_sync_run_1         ... done
-Removing base_webhookd_1         ... done
-Removing base_third-party-http_1 ... done
-Removing base_postgres_1         ... done
-Removing base_rabbitmq_1         ... done
-Removing base_auth_1             ... done
-Creating base_rabbitmq_1 ...
-Creating base_auth_1 ...
-Creating base_third-party-http_1 ...
-Creating base_postgres_1 ...
-Creating base_rabbitmq_1
-Creating base_auth_1
-Creating base_postgres_1
-Creating base_third-party-http_1 ... done
-Creating base_webhookd_1 ...
-Creating base_webhookd_1 ... done
+(webhookd-test)user ~/data/git/webhookd/integration_tests $ denv enter ctid-ng base
+Removing ctid-ng_sync_run_1         ... done
+Removing ctid-ng_webhookd_1         ... done
+Removing ctid-ng_third-party-http_1 ... done
+Removing ctid-ng_postgres_1         ... done
+Removing ctid-ng_rabbitmq_1         ... done
+Removing ctid-ng_auth_1             ... done
+Creating ctid-ng_rabbitmq_1 ...
+Creating ctid-ng_auth_1 ...
+Creating ctid-ng_third-party-http_1 ...
+Creating ctid-ng_postgres_1 ...
+Creating ctid-ng_rabbitmq_1
+Creating ctid-ng_auth_1
+Creating ctid-ng_postgres_1
+Creating ctid-ng_third-party-http_1 ... done
+Creating ctid-ng_webhookd_1 ...
+Creating ctid-ng_webhookd_1 ... done
 172.17.0.3:1080 up!
 172.17.0.4:5432 up!
 ...172.17.0.5:5672 up!
@@ -29,14 +29,14 @@ Creating base_webhookd_1 ... done
 172.17.0.2:9497 up!
 
 [base](webhookd-test)seb ~/data/git/webhookd/integration_tests $ denv restart webhookd
-Restarting base_webhookd_1 ... done
+Restarting ctid-ng_webhookd_1 ... done
 
 [base](webhookd-test)seb ~/data/git/webhookd/integration_tests $ denv exit
-Killing base_webhookd_1         ... done
-Killing base_third-party-http_1 ... done
-Killing base_postgres_1         ... done
-Killing base_rabbitmq_1         ... done
-Killing base_auth_1             ... done
+Killing ctid-ng_webhookd_1         ... done
+Killing ctid-ng_third-party-http_1 ... done
+Killing ctid-ng_postgres_1         ... done
+Killing ctid-ng_rabbitmq_1         ... done
+Killing ctid-ng_auth_1             ... done
 
 (webhookd-test)seb ~/data/git/webhookd/integration_tests $
 ```
@@ -44,7 +44,7 @@ Killing base_auth_1             ... done
 When entering a denv, the containers of the given asset are started. This allows a developer to run tests quicker when writing them, according to the following workflow:
 
 ```
-denv enter
+denv enter ...
 *run the test*... FAIL
 *edit the test*
 *run the test*... FAIL
