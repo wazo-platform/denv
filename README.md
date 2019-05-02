@@ -5,23 +5,23 @@
 Example:
 
 ```
-(webhookd-test)user ~/data/git/webhookd/integration_tests $ denv enter ctid-ng base
-Removing ctid-ng_sync_run_1         ... done
-Removing ctid-ng_webhookd_1         ... done
-Removing ctid-ng_third-party-http_1 ... done
-Removing ctid-ng_postgres_1         ... done
-Removing ctid-ng_rabbitmq_1         ... done
-Removing ctid-ng_auth_1             ... done
-Creating ctid-ng_rabbitmq_1 ...
-Creating ctid-ng_auth_1 ...
-Creating ctid-ng_third-party-http_1 ...
-Creating ctid-ng_postgres_1 ...
-Creating ctid-ng_rabbitmq_1
-Creating ctid-ng_auth_1
-Creating ctid-ng_postgres_1
-Creating ctid-ng_third-party-http_1 ... done
-Creating ctid-ng_webhookd_1 ...
-Creating ctid-ng_webhookd_1 ... done
+(webhookd-test)user ~/data/git/webhookd/integration_tests $ denv enter calld base
+Removing calld_sync_run_1         ... done
+Removing calld_webhookd_1         ... done
+Removing calld_third-party-http_1 ... done
+Removing calld_postgres_1         ... done
+Removing calld_rabbitmq_1         ... done
+Removing calld_auth_1             ... done
+Creating calld_rabbitmq_1 ...
+Creating calld_auth_1 ...
+Creating calld_third-party-http_1 ...
+Creating calld_postgres_1 ...
+Creating calld_rabbitmq_1
+Creating calld_auth_1
+Creating calld_postgres_1
+Creating calld_third-party-http_1 ... done
+Creating calld_webhookd_1 ...
+Creating calld_webhookd_1 ... done
 172.17.0.3:1080 up!
 172.17.0.4:5432 up!
 ...172.17.0.5:5672 up!
@@ -29,14 +29,14 @@ Creating ctid-ng_webhookd_1 ... done
 172.17.0.2:9497 up!
 
 [base](webhookd-test)seb ~/data/git/webhookd/integration_tests $ denv restart webhookd
-Restarting ctid-ng_webhookd_1 ... done
+Restarting calld_webhookd_1 ... done
 
 [base](webhookd-test)seb ~/data/git/webhookd/integration_tests $ denv exit
-Killing ctid-ng_webhookd_1         ... done
-Killing ctid-ng_third-party-http_1 ... done
-Killing ctid-ng_postgres_1         ... done
-Killing ctid-ng_rabbitmq_1         ... done
-Killing ctid-ng_auth_1             ... done
+Killing calld_webhookd_1         ... done
+Killing calld_third-party-http_1 ... done
+Killing calld_postgres_1         ... done
+Killing calld_rabbitmq_1         ... done
+Killing calld_auth_1             ... done
 
 (webhookd-test)seb ~/data/git/webhookd/integration_tests $
 ```
