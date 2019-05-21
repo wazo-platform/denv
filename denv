@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
 denv () {
@@ -7,13 +7,13 @@ denv () {
             denv_enter $2 $3
         ;;
         r|restart)
-            denv_restart $2
+            denv_restart $2 $3
         ;;
         s|reset)
-            denv_reset $2
+            denv_reset $2 $3
         ;;
         x|exit)
-            denv_exit $2
+            denv_exit $2 $3
         ;;
         *)
             echo "Usage: denv {enter|exit|restart|reset} [args...]"
