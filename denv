@@ -72,7 +72,7 @@ denv_exit() {
     fi
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" kill || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" down --volumes --remove-orphans || return 2
 
     unset DENV_CURRENT
     unset DENV_PROJECT
