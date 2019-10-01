@@ -61,7 +61,7 @@ This avoids the starting and stopping of every container when running a few inte
 ## Installing
 
 ```
-git clone https://github.com/wazo-pbx/denv
+git clone https://github.com/wazo-platform/denv
 
 # bash
 echo "source $PWD/denv/denv" >> ~/.bashrc
