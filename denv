@@ -15,6 +15,9 @@ denv () {
         x|exit)
             denv_exit $2 $3
         ;;
+        p|pull)
+            denv_pull $2 $3
+        ;;
         *)
             echo "Usage: denv {enter|exit|restart|reset} [args...]"
             return 1
@@ -112,4 +115,16 @@ denv_reset() {
 
     denv_exit $project $asset
     denv_enter $project $asset
+}
+
+denv_pull() {
+    local project="$1"
+    local asset="$2"
+    if [ -z "${asset}" -o -z "${project}" ]; then
+        echo "Usage: denv pull <project> <asset>"
+        return 1
+    fi
+
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" pull || return 2
 }
