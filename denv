@@ -7,24 +7,24 @@ denv () {
     case "$1" in
         e|enter)
             denv_enter $2 $3
-        ;;
-        r|restart)
-            denv_restart $2 $3
-        ;;
-        s|reset)
-            denv_reset $2 $3
-        ;;
-        x|exit)
-            denv_exit $2 $3
-        ;;
-        p|pull)
-            denv_pull $2 $3
-        ;;
+            ;;
         l|log|logs)
             denv_logs $2
-        ;;
+            ;;
+        p|pull)
+            denv_pull $2 $3
+            ;;
+        r|restart)
+            denv_restart $2 $3
+            ;;
+        s|reset)
+            denv_reset $2 $3
+            ;;
         t|tb|traceback)
             denv_traceback $2
+            ;;
+        x|exit)
+            denv_exit $2 $3
             ;;
         *)
             echo "Usage: denv {enter|exit|logs|pull|restart|reset|traceback} [args...]"
