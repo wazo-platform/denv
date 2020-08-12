@@ -25,7 +25,7 @@ denv () {
             denv_traceback $2
             ;;
         *)
-            echo "Usage: denv {enter|exit|restart|reset|traceback} [args...]"
+            echo "Usage: denv {enter|exit|logs|pull|restart|reset|traceback} [args...]"
             return 1
         ;;
     esac
