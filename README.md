@@ -75,3 +75,5 @@ echo "source $PWD/denv/denv" >> ~/.zshrc
 `denv enter` is aliased to `denv e`.
 `denv restart` is aliased to `denv r`.
 `denv exit` is aliased to `denv x`.
+`denv pull` is aliased to `denv p`.
+`denv logs` is aliased to `denv log` and `denv l`.

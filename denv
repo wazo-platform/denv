@@ -18,6 +18,9 @@ denv () {
         p|pull)
             denv_pull $2 $3
         ;;
+        l|log|logs)
+            denv_logs $2
+        ;;
         *)
             echo "Usage: denv {enter|exit|restart|reset} [args...]"
             return 1
@@ -128,3 +131,31 @@ denv_pull() {
     local dc_file="assets/docker-compose.${asset}.override.yml"
     docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" pull || return 2
 }
+
+denv_logs() {
+    local container="$1"
+    if [ -z "${container}" ]; then
+        echo "Usage: denv logs <container>"
+        return 1
+    fi
+    project="${DENV_PROJECT}"
+    asset="${DENV_CURRENT}"
+    if [ -z "${project}" -o -z "${asset}" ] ; then
+        echo "Could not determine project or asset."
+        return 1
+    fi
+
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
+        | head -n 1 \
+        | xargs docker logs \
+        |& denv_logs_hook "${container}" \
+        |& less --RAW-CONTROL-CHARS +G \
+        || return 2
+}
+
+if ! type denv_logs_hook >/dev/null; then
+    denv_logs_hook() {
+        cat
+    }
+fi
