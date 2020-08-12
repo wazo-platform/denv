@@ -21,8 +21,11 @@ denv () {
         l|log|logs)
             denv_logs $2
         ;;
+        t|tb|traceback)
+            denv_traceback $2
+            ;;
         *)
-            echo "Usage: denv {enter|exit|restart|reset} [args...]"
+            echo "Usage: denv {enter|exit|restart|reset|traceback} [args...]"
             return 1
         ;;
     esac
@@ -159,3 +162,24 @@ if ! type denv_logs_hook >/dev/null; then
         cat
     }
 fi
+
+denv_traceback() {
+    local container="$1"
+    if [ -z "${container}" ]; then
+        echo "Usage: denv logs <container>"
+        return 1
+    fi
+    project="${DENV_PROJECT}"
+    asset="${DENV_CURRENT}"
+    if [ -z "${project}" -o -z "${asset}" ] ; then
+        echo "Could not determine project or asset."
+        return 1
+    fi
+
+    local dc_file="assets/docker-compose.${asset}.override.yml"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
+        | head -n 1 \
+        | xargs docker logs \
+        |& "$LOCAL_GIT_REPOS/release/bin/extract-traceback" \
+        || return 2
+}
