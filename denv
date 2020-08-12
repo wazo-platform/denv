@@ -1,6 +1,8 @@
 # Copyright 2017-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
+DENV_PATH=$(dirname "$0")
+
 denv () {
     case "$1" in
         e|enter)
@@ -149,12 +151,19 @@ denv_logs() {
     fi
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
-        | head -n 1 \
-        | xargs docker logs \
+    _denv_logs_raw "${dc_file}" "${project}" "${container}" \
         |& denv_logs_hook "${container}" \
         |& less --RAW-CONTROL-CHARS +G \
         || return 2
+}
+
+_denv_logs_raw() {
+    dc_file="$1"
+    project="$2"
+    container="$3"
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
+        | head -n 1 \
+        | xargs docker logs
 }
 
 if ! type denv_logs_hook >/dev/null; then
@@ -177,9 +186,7 @@ denv_traceback() {
     fi
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
-        | head -n 1 \
-        | xargs docker logs \
+    _denv_logs_raw "${dc_file}" "${project}" "${container}" \
         |& "$LOCAL_GIT_REPOS/release/bin/extract-traceback" \
         || return 2
 }
