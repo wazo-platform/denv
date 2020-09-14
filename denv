@@ -167,7 +167,7 @@ _denv_logs_raw() {
         | xargs docker logs
 }
 
-if ! type denv_logs_hook >/dev/null; then
+if ! type denv_logs_hook >&/dev/null; then
     denv_logs_hook() {
         cat
     }
