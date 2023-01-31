@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Copyright 2017-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
@@ -189,3 +190,7 @@ denv_traceback() {
         |& "$LOCAL_GIT_REPOS/release/bin/extract-traceback" \
         || return 2
 }
+command="$@"
+if test -n "$command"; then
+    denv $command
+fi
