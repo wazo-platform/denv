@@ -81,8 +81,8 @@ denv_exit() {
     fi
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" kill || return 2
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" down --volumes --remove-orphans || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" kill || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" down --volumes --remove-orphans || return 2
 
     unset DENV_CURRENT
     unset DENV_PROJECT
@@ -102,7 +102,7 @@ denv_restart() {
     fi
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" restart "${container}" || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" restart "${container}" || return 2
 }
 
 denv_reset() {
@@ -160,7 +160,7 @@ _denv_logs_raw() {
     dc_file="$1"
     project="$2"
     container="$3"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" ps -q "${container}" \
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" ps -q "${container}" \
         | head -n 1 \
         | xargs docker logs
 }
