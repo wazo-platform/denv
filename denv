@@ -1,4 +1,4 @@
-# Copyright 2017-2019 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2017-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
 denv () {
@@ -49,8 +49,8 @@ denv_enter() {
     DENV_PROJECT="${project}"
 
     local dc_file="assets/docker-compose.${asset}.override.yml"
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" down -v || return 2
-    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}" run sync || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" down -v || return 2
+    docker-compose -f 'assets/docker-compose.yml' -f "${dc_file}" -p "${project}_${asset}" run sync || return 2
 
     DENV_OLD_PS1="${PS1}"
     PS1="[${asset}]${PS1}"
